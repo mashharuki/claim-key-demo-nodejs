@@ -20,3 +20,4 @@ yarn start --lookup
 
 ## 参考文献
 1. [Lit JS SDK V3: Claimable Keys](https://spark.litprotocol.com/lit-js-sdk-v3-claimable-keys/)
+2. [Stytch](https://stytch.com/docs?ref=spark.litprotocol.com)
