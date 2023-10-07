@@ -17,3 +17,6 @@ yarn start --lookup
 ```
 
 *Note* All code in this demo is runnable in a web context.
+
+## 参考文献
+1. [Lit JS SDK V3: Claimable Keys](https://spark.litprotocol.com/lit-js-sdk-v3-claimable-keys/)
