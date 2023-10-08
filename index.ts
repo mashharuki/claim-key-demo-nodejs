@@ -1,5 +1,6 @@
 import { ProviderType } from "@lit-protocol/constants";
-import LitAuthClient, {
+import {
+  LitAuthClient,
   StytchOtpProvider,
 } from "@lit-protocol/lit-auth-client/src/index.js";
 import { LitNodeClientNodeJs } from "@lit-protocol/lit-node-client-nodejs";
@@ -16,6 +17,7 @@ dotenv.config();
 const STYTCH_PROJECT_ID: string | undefined = process.env.STYTCH_PROJECT_ID;
 const STYTCH_SECRET: string | undefined = process.env.STYTCH_SECRET;
 const LIT_RELAY_API_KEY: string | undefined = process.env.LIT_RELAY_API_KEY;
+const EMAIL_ADDRESS: string | undefined = process.env.EMAIL_ADDRESS;
 
 if (!STYTCH_PROJECT_ID || !STYTCH_SECRET) {
   throw Error("Could not find stytch project secret or id in enviorment");
@@ -30,10 +32,11 @@ const client = new stytch.Client({
   secret: STYTCH_SECRET,
 });
 
+// Eメールの時の設定
 const emailResponse = await prompts({
   type: "text",
   name: "email",
-  message: "Enter your email:",
+  message: EMAIL_ADDRESS,
 });
 
 const stytchResponse = await client.otps.email.loginOrCreate({
@@ -46,6 +49,7 @@ const otpResponse = await prompts({
   message: "Enter the code sent to your email:",
 });
 
+// ワンタイムパスワード認証の設定
 const authResponse = await client.otps.authenticate({
   method_id: stytchResponse.email_id,
   code: otpResponse.code,
@@ -65,8 +69,10 @@ const litNodeClient = new LitNodeClientNodeJs({
   debug: false,
 });
 
+// connect
 await litNodeClient.connect();
 
+// Lit用のインスタンスを設定
 const authClient = new LitAuthClient({
   litRelayConfig: {
     relayApiKey: LIT_RELAY_API_KEY,
@@ -85,6 +91,7 @@ const session = authClient.initProvider<StytchOtpProvider>(
 const authMethod = await session.authenticate({
   accessToken: sessionStatus.session_jwt,
 });
+// get public key
 const publicKey = await session.computePublicKeyFromAuthMethod(authMethod);
 console.log("local public key computed: ", publicKey);
 
@@ -95,5 +102,5 @@ if (process.argv.length >= 3 && process.argv[2] === "--claim") {
   console.log("claim response public key: ", claimResp.pubkey);
 } else if (process.argv.length >= 3 && process.argv[2] === "--lookup") {
   const pkpInfo = await session.fetchPKPsThroughRelayer(authMethod);
-  console.log(pkpInfo);
+  console.log("pkpInfo:", pkpInfo);
 }
