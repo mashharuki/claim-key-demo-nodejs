@@ -15,6 +15,7 @@
     "@lit-protocol/pkp-ethers": "3.0.4",
     "@types/node": "^20.7.2",
     "@types/prompts": "^2.4.4",
+    "dotenv": "^16.3.1",
     "ethers": "^5.7.2",
     "prompts": "^2.4.2",
     "stytch": "^8.3.0",

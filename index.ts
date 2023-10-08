@@ -1,11 +1,13 @@
-import {
-  LitAuthClient,
+import { ProviderType } from "@lit-protocol/constants";
+import LitAuthClient, {
   StytchOtpProvider,
 } from "@lit-protocol/lit-auth-client/src/index.js";
+import { LitNodeClientNodeJs } from "@lit-protocol/lit-node-client-nodejs";
+import * as dotenv from 'dotenv';
 import prompts from "prompts";
 import * as stytch from "stytch";
-import { LitNodeClientNodeJs } from "@lit-protocol/lit-node-client-nodejs";
-import { ProviderType } from "@lit-protocol/constants";
+
+dotenv.config();
 
 /**
  * Should be defined in your local enviorment before running
